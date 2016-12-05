@@ -46,22 +46,28 @@ void setup() {
 void loop() {
   // If using a static IP, comment out the next line
   Ethernet.maintain();
-  delay(5000);
   Serial.println("Looping");
-  delay(5000);
 
   buttonState = digitalRead(buttonPin);
   if (buttonState == 0) {
     // turn LED on:
-      doPost();
+      doPost("Jacob, Sending is Done!");
   }
+  delay(5000);
 }
-void doPost(){
+void doPost(String a){
 
+//Create Payload Message
+String ident = "value1=3175636398&value2=";
+String totalMessage = ident + a;
+
+
+Serial.print("totalMessage: ");
+Serial.println(totalMessage);
 
     // params must be url encoded.
     //sprintf(params,"value1=%i",totalCount); //totalCount  //temp1
-    if(!postPage(serverName,serverPort,pageName,"value1=3175636398&value2=Jake this is from an arduino. Thanks Sam!")) Serial.print(F("Fail "));
+    if(!postPage(serverName,serverPort,pageName,totalMessage.c_str())) Serial.print(F("Fail "));
     else Serial.print(F("Pass "));
     totalCount++;
     Serial.println(totalCount,DEC);
