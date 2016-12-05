@@ -22,8 +22,8 @@ char params[32];
 //char params[] = "hello";
 //End Network Configuration
 
-const int buttonPin = 3; 
-int buttonState = 0;   
+const int buttonPin = 3;
+int buttonState = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -39,35 +39,29 @@ void setup() {
   delay(2000);
   Serial.println(F("Ready"));
 
-  pinMode(buttonPin, INPUT); 
+  pinMode(buttonPin, INPUT);
 
 }
 
 void loop() {
   // If using a static IP, comment out the next line
   Ethernet.maintain();
-  Serial.println("Looping");
-    
-  buttonState = digitalRead(buttonPin);
-  if (buttonState == 0) {    
-    // turn LED on:    
-      doPost("Jacob, Sending is Done!"); 
-  }
   delay(5000);
+  Serial.println("Looping");
+  delay(5000);
+
+  buttonState = digitalRead(buttonPin);
+  if (buttonState == 0) {
+    // turn LED on:
+      doPost();
+  }
 }
-void doPost(String a){
-  
-//Create Payload Message  
-String ident = "value1=3175636398&value2=";
-String totalMessage = ident + a;
+void doPost(){
 
-
-Serial.print("totalMessage: ");
-Serial.println(totalMessage);
 
     // params must be url encoded.
     //sprintf(params,"value1=%i",totalCount); //totalCount  //temp1
-    if(!postPage(serverName,serverPort,pageName,totalMessage.c_str())) Serial.print(F("Fail "));
+    if(!postPage(serverName,serverPort,pageName,"value1=3175636398&value2=Jake this is from an arduino. Thanks Sam!")) Serial.print(F("Fail "));
     else Serial.print(F("Pass "));
     totalCount++;
     Serial.println(totalCount,DEC);
@@ -131,4 +125,3 @@ byte postPage(char* domainBuffer,int thisPort,char* page,char* thisData)
   client.stop();
   return 1;
 }
-
