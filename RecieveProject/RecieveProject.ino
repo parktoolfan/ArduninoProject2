@@ -48,8 +48,8 @@ void sendGET() //client function to send/receive GET request data.
 {
   if (client.connect(serverName, 80)) {  //starts client connection, checks for connection
     Serial.println("connected");
-    client.println("GET /arduinoproject/s3conversation.txt"); //download text
-    client.println("Host: web.comporium.net");
+    client.println("GET /arduinoproject/s3conversation.txt HTTP/1.1"); //download text
+    client.println("Host: s3.amazonaws.com");
     client.println("Connection: close");  //close 1.1 persistent connection  
     client.println(); //end of get request
   } 
