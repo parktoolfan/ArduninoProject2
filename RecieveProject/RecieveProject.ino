@@ -18,6 +18,8 @@ int x = 0; //for counting line feeds
 char lf = 10; //line feed character
 //////////////////////
 
+String lastMessage;
+
 void setup() {
 
   if (Ethernet.begin(mac) == 0) {
@@ -79,37 +81,27 @@ void sendGET() //client function to send/receive GET request data.
       client.read();
     }
   }
+  int a = 0;
+  char payloadArray[40];
   while (client.connected() || client.available()) { //connected or data available
     //    //client.readStringUntil(':');
     char c = client.read(); //gets byte from ethernet buffer
     Serial.print(c); //prints raw feed for testing
+    payloadArray[a] = c;
+    a = a + 1;
   }
+  Serial.println();
 
-
-
-    //  while (client.connected() || client.available()) { //connected or data available
-    //    //client.readStringUntil(':');
-    //    char c = client.read(); //gets byte from ethernet buffer
-    //    Serial.print(c); //prints raw feed for testing
-    //    if (c==lf) x=(x+1); //counting line feeds
-    //    if (x==9) readString += c; //building readString
-    //   }
-
-    //  Serial.println();
-    //  Serial.println();
-    //  Serial.print("Current data row:" );
-    //  Serial.print(readString); //the 10th line captured
-    //  Serial.println();
-    //  readString1 = (readString.substring(0,8)); //extracting "woohoo!"
-    //  Serial.println();
-    //  Serial.print("How we feeling?: ");
-    //  Serial.println(readString1);
-    //  Serial.println();
-    //  Serial.println("done");
-    //  Serial.println("disconnecting.");
-    //  Serial.println("==================");
-    //  Serial.println();
-    readString = ("");
-    readString1 = ("");
-    client.stop(); //stop client
+  for (int i = 0; i < sizeof(payloadArray); i = i + 1) {
+    Serial.print(payloadArray[i]);
   }
+  String str(payloadArray);
+  lastMessage = payloadArray;
+  Serial.println();
+  Serial.println();
+  Serial.println();
+  Serial.println();
+  Serial.println(lastMessage);
+
+  client.stop(); //stop client
+}

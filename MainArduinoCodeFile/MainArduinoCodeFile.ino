@@ -26,6 +26,8 @@ EthernetClient client;
 const int buttonPin = 3;
 int buttonState = 0;
 
+String lastMessage;
+
 void setup() {
   Serial.begin(9600);
   //Signal Power
@@ -94,11 +96,23 @@ void sendGET() //client function to send/receive GET request data.
       client.read();
     }
   }
+  int a = 0;
+  char payloadArray[40];
   while (client.connected() || client.available()) { //connected or data available
     //    //client.readStringUntil(':');
     char c = client.read(); //gets byte from ethernet buffer
     Serial.print(c); //prints raw feed for testing
+    payloadArray[a] = c;
+    a = a + 1;
   }
+  Serial.println();
+
+  for (int i = 0; i < sizeof(payloadArray); i = i + 1) {
+    Serial.print(payloadArray[i]);
+  }
+  String str(payloadArray);
+  lastMessage = payloadArray;
+
   client.stop(); //stop client
 }
 
