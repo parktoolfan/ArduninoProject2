@@ -10,7 +10,7 @@
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
 };
-char serverName[] = "s3.amazonaws.com"; // zoomkat's test web page server  web.comporium.net
+char serverNameAmazon[] = "s3.amazonaws.com"; // zoomkat's test web page server  web.comporium.net
 EthernetClient client;
 
 String readString, readString1;
@@ -47,7 +47,7 @@ void loop() {
 
 void sendGET() //client function to send/receive GET request data.
 {
-  if (client.connect(serverName, 80)) {  //starts client connection, checks for connection
+  if (client.connect(serverNameAmazon, 80)) {  //starts client connection, checks for connection
     //Serial.println("connected");
     Serial.println();
     client.println("GET /arduinoproject/s3conversation.txt HTTP/1.1"); //download text
