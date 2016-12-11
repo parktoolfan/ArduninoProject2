@@ -36,7 +36,8 @@ using terms from application "Messages"
 				keystroke "w" using {command down}
 			end tell
 *)
-			s3write(theContent)
+			set theContentformatted to "bggn" & theContent
+			s3write(theContentformatted)
 			delay 5
 			tell application "Transmit"
 				-- In Transmit 4, favorites are now objects and must be specified in a different way. Below
