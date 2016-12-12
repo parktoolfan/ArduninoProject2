@@ -14,6 +14,7 @@ char serverNameAmazon[] = "s3.amazonaws.com"; // zoomkat's test web page server 
 
 //Begin Ifttt setup
 char serverName[] = "maker.ifttt.com";
+int totalCount = 0; //0
 // change to your server's port
 int serverPort = 80;
 // change to the page on that server
@@ -81,7 +82,7 @@ void loop() {
     digitalWrite(4, LOW);
     delay(100);
     doPost("Jacob, Sending is Done!");
-
+    buttonState = 1;
   }
 
   //Recieving code
@@ -178,6 +179,8 @@ void doPost(String a) {
 
   if (!postPage(serverName, serverPort, pageName, totalMessage.c_str())) Serial.print(F("Fail "));
   else Serial.print(F("Pass "));
+    totalCount++;
+    Serial.println(totalCount,DEC);
 }
 
 byte postPage(char* domainBuffer, int thisPort, char* page, char* thisData)
