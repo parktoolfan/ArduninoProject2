@@ -67,6 +67,19 @@ void loop() {
   buttonState = digitalRead(buttonPin);
   if (buttonState == 0) {
     // turn LED on:
+    //Blink LED 3 times
+    digitalWrite(4, HIGH);
+    delay(100);
+    digitalWrite(4, LOW);
+    delay(100);
+    digitalWrite(4, HIGH);
+    delay(100);
+    digitalWrite(4, LOW);
+    delay(100);
+    digitalWrite(4, HIGH);
+    delay(100);
+    digitalWrite(4, LOW);
+    delay(100);
     doPost("Jacob, Sending is Done!");
   }
 
