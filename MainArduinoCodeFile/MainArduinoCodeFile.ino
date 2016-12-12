@@ -53,13 +53,36 @@ void setup() {
 }
 
 void loop() {
+  //Begin lets try to put all this together
+  //Maintain ethernet:
+  Ethernet.maintain();
+  Serial.println("Looping");
+  //Blink LED
   digitalWrite(4, HIGH);
   delay(500);
   digitalWrite(4, LOW);
   delay(500);
 
+  //Check if there is a message to send and if so, send it.
+  buttonState = digitalRead(buttonPin);
+  if (buttonState == 0) {
+    // turn LED on:
+    doPost("Jacob, Sending is Done!");
+  }
 
-  //Begin lets try to put all this together
+  //Recieving code
+  sendGET(); //call send get. This will set value of newMessage.
+  if (!(newMessage.equals(lastMessage))) {
+    Serial.println("There is a New Message");
+    //toPrint(newMessage);
+    Serial.println();
+    lastMessage = newMessage;
+  } else {
+    Serial.println("No New Message.");
+    Serial.println();
+  }
+
+  delay(13000);
 
 }
 
@@ -107,17 +130,14 @@ void sendGET() //client function to send/receive GET request data.
   while (client.connected() || client.available()) { //connected or data available
     //    //client.readStringUntil(':');
     char c = client.read(); //gets byte from ethernet buffer
-    Serial.print(c); //prints raw feed for testing
+    //Serial.print(c); //prints raw feed for testing
     payloadArray[a] = c;
     a = a + 1;
   }
-  Serial.println();
-
   for (int i = 0; i < sizeof(payloadArray); i = i + 1) {
     Serial.print(payloadArray[i]);
   }
   String str(payloadArray);
-  lastMessage = payloadArray;
 
   client.stop(); //stop client
 }
