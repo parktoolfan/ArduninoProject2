@@ -18,8 +18,7 @@ using terms from application "Messages"
 			set theHandle to handle of theBuddy
 			set theContent to eventDescription
 			set payload to theHandle & "," & theContent
-			
-			
+      
 			(*
 			#Create a push request and send the message content
 			display notification "DOING JOB"
@@ -74,6 +73,8 @@ using terms from application "Messages"
 			report("Data written to S3")
 		on error errorMessage number errorNumber
 			report("errorMessage from write data to S3: " & errorMessage & ", errorNumber: " & errorNumber)
+		on error errorMessage number errorNumber
+			report("errorMessage: " & errorMessage & ", errorNumber: " & errorNumber)
 		end try
 		
 	end message received
@@ -108,9 +109,9 @@ using terms from application "Messages"
 		#		say eventDescription
 	end received video invitation
 	
-	on «event ichthe15» given «class hepr»:theBuddy, «class hect»:theChat, «class heed»:eventDescription
+	on √áevent ichthe15√à given √áclass hepr√à:theBuddy, √áclass hect√à:theChat, √áclass heed√à:eventDescription
 		#		say eventDescription
-	end «event ichthe15»
+	end √áevent ichthe15√à
 	
 	on buddy authorization requested with eventDescription
 		#		say eventDescription
@@ -120,9 +121,9 @@ using terms from application "Messages"
 		#		say eventDescription
 	end addressed chat room message received
 	
-	on «event ichthe16» given «class heed»:eventDescription
+	on √áevent ichthe16√à given √áclass heed√à:eventDescription
 		#		say eventDescription
-	end «event ichthe16»
+	end √áevent ichthe16√à
 	
 	on login finished with eventDescription
 	end login finished
@@ -147,7 +148,7 @@ using terms from application "Messages"
 	
 	on completed file transfer with eventDescription
 	end completed file transfer
-	
+
 end using terms from
 
 on s3write(thisString)
