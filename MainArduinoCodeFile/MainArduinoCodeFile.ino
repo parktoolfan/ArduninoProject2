@@ -98,13 +98,10 @@ void loop() {
   }
   //delay 10 seconds at end
   delay(10000);
-
 }
-
 
 //Begin AMAZON S3 METHODS
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 void sendGET() //client function to send/receive GET request data.
 {
@@ -168,7 +165,6 @@ void sendGET() //client function to send/receive GET request data.
 
 //Begin IFTTT POST METHODS
 //////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 void doPost(String a) {
 
