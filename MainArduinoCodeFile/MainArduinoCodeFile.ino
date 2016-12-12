@@ -26,7 +26,9 @@ EthernetClient client;
 const int buttonPin = 3;
 int buttonState = 0;
 
+//lastMessage will be the string that is the last text message recieved, we will compare this with newMessage to see if there has been a new text message.
 String lastMessage;
+String newMessage;
 
 void setup() {
   Serial.begin(9600);
@@ -35,6 +37,7 @@ void setup() {
   digitalWrite(4, HIGH);
   pinMode(buttonPin, INPUT);
 
+  //start LCD
   lcd.setup();
   delay(500);
   lcd.backLightOn();
@@ -54,6 +57,9 @@ void loop() {
   delay(500);
   digitalWrite(4, LOW);
   delay(500);
+
+
+  //Begin lets try to put all this together
 
 }
 
