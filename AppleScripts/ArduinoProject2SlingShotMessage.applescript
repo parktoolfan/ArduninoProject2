@@ -71,9 +71,9 @@ using terms from application "Messages"
 			delay 3
 			tell application "Transmit" to quit
 			display notification "Data written to S3"
-			
+			report("Data written to S3")
 		on error errorMessage number errorNumber
-			report("errorMessage: " & errorMessage & ", errorNumber: " & errorNumber)
+			report("errorMessage from write data to S3: " & errorMessage & ", errorNumber: " & errorNumber)
 		end try
 		
 	end message received
