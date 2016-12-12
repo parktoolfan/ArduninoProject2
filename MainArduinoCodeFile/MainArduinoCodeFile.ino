@@ -49,7 +49,6 @@ void setup() {
   else Serial.println(Ethernet.localIP());
   delay(2000);
   Serial.println(F("Ready"));
-
 }
 
 void loop() {
@@ -87,15 +86,18 @@ void loop() {
   sendGET(); //call send get. This will set value of newMessage.
   if (!(newMessage.equals(lastMessage))) {
     Serial.println("There is a New Message");
-    //toPrint(newMessage);
+    char output[32];
+    newMessage.toCharArray(output, 32);
+    toPrint(output);
+    //toPrint(output[]);
     Serial.println();
     lastMessage = newMessage;
   } else {
     Serial.println("No New Message.");
     Serial.println();
   }
-
-  delay(13000);
+  //delay 10 seconds at end
+  delay(10000);
 
 }
 
@@ -139,7 +141,7 @@ void sendGET() //client function to send/receive GET request data.
     }
   }
   int a = 0;
-  char payloadArray[40];
+  char payloadArray[32];
   while (client.connected() || client.available()) { //connected or data available
     //    //client.readStringUntil(':');
     char c = client.read(); //gets byte from ethernet buffer
