@@ -8,79 +8,100 @@
 #include <SPI.h>
 #include <Ethernet.h>
 byte mac[] = {
-  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
-char serverName[] = "s3.amazonaws.com"; // zoomkat's test web page server  web.comporium.net
+  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
+};
+char serverNameAmazon[] = "s3.amazonaws.com"; // zoomkat's test web page server  web.comporium.net
 EthernetClient client;
 
 String readString, readString1;
-int x=0; //for counting line feeds
-char lf=10; //line feed character
+int x = 0; //for counting line feeds
+char lf = 10; //line feed character
 //////////////////////
 
-void setup(){
+String lastMessage;
+
+void setup() {
 
   if (Ethernet.begin(mac) == 0) {
     Serial.println("Failed to configure Ethernet using DHCP");
     // no point in carrying on, so do nothing forevermore:
-    while(true);
+    while (true);
   }
-  Serial.begin(9600); 
+  Serial.begin(9600);
   Serial.println("Better client test 5/13/13"); // so I can keep track of what is loaded
   Serial.println("Send an e in serial monitor to test"); // what to do to test
 }
 
-void loop(){
+void loop() {
   // check for serial input
   if (Serial.available() > 0) //if something in serial buffer
   {
     byte inChar; // sets inChar as a byte
     inChar = Serial.read(); //gets byte from buffer
-    if(inChar == 'e') // checks to see byte is an e
+    if (inChar == 'e') // checks to see byte is an e
     {
       sendGET(); // call sendGET function below when byte is an e
     }
-  }  
-} 
+  }
+}
 
 //////////////////////////
 
 void sendGET() //client function to send/receive GET request data.
 {
-  if (client.connect(serverName, 80)) {  //starts client connection, checks for connection
-    Serial.println("connected");
-    client.println("GET /arduinoproject/s3conversation.txt"); //download text
-    client.println("Host: web.comporium.net");
-    client.println("Connection: close");  //close 1.1 persistent connection  
+  if (client.connect(serverNameAmazon, 80)) {  //starts client connection, checks for connection
+    //Serial.println("connected");
+    Serial.println();
+    client.println("GET /arduinoproject/s3conversation.txt HTTP/1.1"); //download text
+    client.println("Host: s3.amazonaws.com");
+    client.println("Connection: close");  //close 1.1 persistent connection
     client.println(); //end of get request
-  } 
+  }
   else {
     Serial.println("connection failed"); //error message if no client connect
     Serial.println();
   }
 
-  while(client.connected() && !client.available()) delay(1); //waits for data
+  while (client.connected() && !client.available()) delay(1); //waits for data to be downloaded
+
+  while (true) {
+    if (client.peek() == 'b') {
+      client.read();
+      if (client.peek() == 'g') {
+        client.read();
+        if (client.peek() == 'g') {
+          client.read();
+          if (client.peek() == 'n') {
+            client.read();
+            break;
+          }
+        }
+      }
+    } else {
+      client.read();
+    }
+  }
+  int a = 0;
+  char payloadArray[40];
   while (client.connected() || client.available()) { //connected or data available
+    //    //client.readStringUntil(':');
     char c = client.read(); //gets byte from ethernet buffer
     Serial.print(c); //prints raw feed for testing
-    if (c==lf) x=(x+1); //counting line feeds
-    if (x==9) readString += c; //building readString
-   }
+    payloadArray[a] = c;
+    a = a + 1;
+  }
+  Serial.println();
 
-  Serial.println();  
+  for (int i = 0; i < sizeof(payloadArray); i = i + 1) {
+    Serial.print(payloadArray[i]);
+  }
+  String str(payloadArray);
+  lastMessage = payloadArray;
   Serial.println();
-  Serial.print("Current data row:" );
-  Serial.print(readString); //the 10th line captured
   Serial.println();
-  readString1 = (readString.substring(0,8)); //extracting "woohoo!"
   Serial.println();
-  Serial.print("How we feeling?: ");
-  Serial.println(readString1);
-  Serial.println();      
-  Serial.println("done");
-  Serial.println("disconnecting.");
-  Serial.println("==================");
   Serial.println();
-  readString = ("");
-  readString1 = ("");  
+  Serial.println(lastMessage);
+
   client.stop(); //stop client
 }

@@ -18,7 +18,8 @@ using terms from application "Messages"
 			set theHandle to handle of theBuddy
 			set theContent to eventDescription
 			set payload to theHandle & "," & theContent
-			
+      
+			(*
 			#Create a push request and send the message content
 			display notification "DOING JOB"
 			set postRequest to "curl -X POST -H \"Content-Type: application/json\" -d '{\"value1\":\"" & theHandle & "\",\"value2\":\"" & theContent & "\"}' https://maker.ifttt.com/trigger/toArduinoWithPayload/with/key/bLMBpfOKL5alWnYd1MMij3"
@@ -33,7 +34,45 @@ using terms from application "Messages"
 				delay 1
 				keystroke "w" using {command down}
 			end tell
+*)
+			set theContentformatted to "bggn" & theContent
+			s3write(theContentformatted)
+			delay 5
+			tell application "Transmit"
+				-- In Transmit 4, favorites are now objects and must be specified in a different way. Below
+				-- we're choosing the first occurrence of a favorite named "My Great Server"(it's possible to
+				-- have multiple favorites with the same name).
+				--
+				-- Also, the favorites list can only be directly referenced within Transmit's tell block, which is
+				-- why we're setting a variable below instead of looking up the favorite within the tab's tell
+				-- block.
+				
+				set myFave to item 1 of (favorites whose name is "S3AmazonArduino")
+				set myRules to (skip rules whose name is "New Rule") -- must be a set, not an individual item
+				
+				-- Create a new window (and thus a single tab) for this script
+				tell current tab of (make new document at end)
+					connect to myFave
+					
+					-- Go into the local and remote folders that we want to sync.
+					change location of local browser to path "~/Documents/TransmitAmazonS3SyncFolder"
+					change location of remote browser to path "arduinoproject"
+					
+					-- Run a basic sync from the current local folder to the current remote folder. (The sync
+					-- command has many options, so be sure to check Transmit's dictionary.)
+					synchronize local browser to remote browser using skip rules myRules
+					
+					-- Close the connection.
+					close remote browser
+				end tell
+			end tell
 			
+			delay 3
+			tell application "Transmit" to quit
+			display notification "Data written to S3"
+			report("Data written to S3")
+		on error errorMessage number errorNumber
+			report("errorMessage from write data to S3: " & errorMessage & ", errorNumber: " & errorNumber)
 		on error errorMessage number errorNumber
 			report("errorMessage: " & errorMessage & ", errorNumber: " & errorNumber)
 		end try
@@ -70,9 +109,9 @@ using terms from application "Messages"
 		#		say eventDescription
 	end received video invitation
 	
-	on «event ichthe15» given «class hepr»:theBuddy, «class hect»:theChat, «class heed»:eventDescription
+	on √áevent ichthe15√à given √áclass hepr√à:theBuddy, √áclass hect√à:theChat, √áclass heed√à:eventDescription
 		#		say eventDescription
-	end «event ichthe15»
+	end √áevent ichthe15√à
 	
 	on buddy authorization requested with eventDescription
 		#		say eventDescription
@@ -82,9 +121,9 @@ using terms from application "Messages"
 		#		say eventDescription
 	end addressed chat room message received
 	
-	on «event ichthe16» given «class heed»:eventDescription
+	on √áevent ichthe16√à given √áclass heed√à:eventDescription
 		#		say eventDescription
-	end «event ichthe16»
+	end √áevent ichthe16√à
 	
 	on login finished with eventDescription
 	end login finished
@@ -109,5 +148,27 @@ using terms from application "Messages"
 	
 	on completed file transfer with eventDescription
 	end completed file transfer
-	
+
 end using terms from
+
+on s3write(thisString)
+	set this_story to thisString
+	set this_file to ("SSDX:Users:theostangebye:Documents:TransmitAmazonS3SyncFolder:" & "s3conversation.txt")
+	my write_to_file(this_story, this_file, false)
+end s3write
+
+on write_to_file(this_data, target_file, append_data)
+	try
+		set the target_file to the target_file as string
+		set the open_target_file to open for access file target_file with write permission
+		if append_data is false then set eof of the open_target_file to 0
+		write this_data to the open_target_file starting at eof
+		close access the open_target_file
+		return true
+	on error
+		try
+			close access file target_file
+		end try
+		return false
+	end try
+end write_to_file
