@@ -97,7 +97,7 @@ void loop() {
     Serial.println();
   }
   //delay 10 seconds at end
-  delay(10000);
+  delay(5000);
 }
 
 //Begin AMAZON S3 METHODS
@@ -139,6 +139,10 @@ void sendGET() //client function to send/receive GET request data.
   }
   int a = 0;
   char payloadArray[32];
+  //Now clear array.
+  for (int i = 0; i < sizeof(payloadArray); i = i + 1) {
+    payloadArray[i] = ' ';
+  }
   while (client.connected() || client.available()) { //connected or data available
     //    //client.readStringUntil(':');
     char c = client.read(); //gets byte from ethernet buffer
@@ -154,11 +158,6 @@ void sendGET() //client function to send/receive GET request data.
 
   String str(payloadArray);
   newMessage = payloadArray;
-
-  //Now clear array.
-  for (int i = 0; i < sizeof(payloadArray); i = i + 1) {
-    payloadArray[i] = ' ';
-  }
 
   client.stop(); //stop client
 }
@@ -244,3 +243,4 @@ void toPrint(char output[]) {
   lcd.at(0, 0, output);
   delay(5000);
 }
+
