@@ -134,10 +134,19 @@ void sendGET() //client function to send/receive GET request data.
     payloadArray[a] = c;
     a = a + 1;
   }
+  Serial.print("Here is our array:     ");
   for (int i = 0; i < sizeof(payloadArray); i = i + 1) {
     Serial.print(payloadArray[i]);
   }
+  Serial.println();
+
   String str(payloadArray);
+  newMessage = payloadArray;
+
+  //Now clear array.
+  for (int i = 0; i < sizeof(payloadArray); i = i + 1) {
+    payloadArray[i] = ' ';
+  }
 
   client.stop(); //stop client
 }
