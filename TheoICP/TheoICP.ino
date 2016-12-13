@@ -100,6 +100,7 @@ void loop() {
     }
     Serial.println(dataRecieved);
     //doPost("Jacob, Sending is Done!");
+    doPost(dataRecieved);
     buttonState = 0;
   }
 
