@@ -265,7 +265,7 @@ void toPrint(char output[]) {
 // this function is registered as an event, see setup()
 void receiveEvent(int howMany) {
     Serial.println("RECIEVING FROM ARDUINO");
-    char c = Wire.read(); // receive byte as a character
+    int c = Wire.read(); // receive byte as a character
     Serial.print(c);         // print the character
   
 }
