@@ -9,16 +9,16 @@ byte mac[] = {
 #include <ParallaxLCD.h>
 ParallaxLCD lcd(6, 2, 16);
 
+int speakerPin = 13;
+
 //Begin Amazon wireless setup
 char serverNameAmazon[] = "s3.amazonaws.com"; // zoomkat's test web page server  web.comporium.net
 
 //Begin Josiah Music Piezo
-int speakerPi
 const int dotBeat = 60; // For our purposes, the dot beat is a single unit of time (in morse code, a dot is one unit, while a dash is three unts).
 const int dashBeat = 3 * dotBeat;
 
 //Begin Josiah setup variables
-int speakerPin = 13;
 const int buttonPin1 = 2; 
 const int buttonPin2 = 3;
 const int buttonPin3 = 4;
