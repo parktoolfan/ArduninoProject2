@@ -95,17 +95,17 @@ void loop() {
 
     char dataRecieved[30];
     int n = Wire.requestFrom(8, 30);
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < 30; i++) {
       dataRecieved[i] = Wire.read();
     }
     dataRecieved[27] = ' ';
     dataRecieved[28] = ' ';
     dataRecieved[29] = ' ';
-    dataRecieved[30] = ' ';
+    //dataRecieved[30] = ' ';
     Serial.println(dataRecieved);
     //doPost("Jacob, Sending is Done!");
-    doPost(dataRecieved);
     toPrint(dataRecieved);
+    doPost(dataRecieved);
     buttonState = 0;
   }
 
@@ -195,9 +195,11 @@ void sendGET() //client function to send/receive GET request data.
 void doPost(String a) {
 
   //Create Payload Message
-  String ident = "value1=3175636398&value2=";
+  //String ident = "value1=5706601483value2=";
+  //String totalMessage = ident + a;
+  String ident = "value1=";
   String totalMessage = ident + a;
-
+  
   Serial.print("totalMessage: ");
   Serial.println(totalMessage);
 
