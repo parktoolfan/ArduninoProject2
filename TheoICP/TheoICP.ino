@@ -1,5 +1,6 @@
 #include <SPI.h>
 #include <Ethernet.h>
+#include <Wire.h>
 byte mac[] = {
   0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED
 };
@@ -31,12 +32,21 @@ int buttonState = 0;
 String lastMessage;
 String newMessage;
 
+//Establish array for holding characters to send to our remote person
+char recievedChars[30];
+int numberofcharsrecieved = 0;
+
 void setup() {
   Serial.begin(9600);
   //Signal Power
   pinMode(7, OUTPUT);
   digitalWrite(7, HIGH);
   pinMode(buttonPin, INPUT);
+
+  //Setup for wire transfer
+    Wire.begin(8);                // join i2c bus with address #8
+  Wire.onReceive(receiveEvent); // register event
+  Serial.begin(9600);           // start serial for output
 
   //start LCD
   lcd.setup();
@@ -100,7 +110,7 @@ void loop() {
     Serial.println();
   }
   //delay 10 seconds at end
-  delay(5000);
+  delay(15000);
 }
 
 //Begin AMAZON S3 METHODS
@@ -247,4 +257,15 @@ void toPrint(char output[]) {
   lcd.empty();
   lcd.at(0, 0, output);
   delay(5000);
+}
+
+//Begin wire methods
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+// function that executes whenever data is received from master
+// this function is registered as an event, see setup()
+void receiveEvent(int howMany) {
+    Serial.println("RECIEVING FROM ARDUINO");
+    char c = Wire.read(); // receive byte as a character
+    Serial.print(c);         // print the character
+  
 }
