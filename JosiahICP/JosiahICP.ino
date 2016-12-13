@@ -55,21 +55,12 @@ int lastButtonState3 = 0;
 // Array to hold the chars
 char singleMorse[] = "     ";
 char* morseCode[] = {".-   ", "-... ", "-.-. ", "-..  ", ". ", "..-. ", "--.  ", ".... ", "..   ", // A-I
-<<<<<<< HEAD
                      ".--- ", "-.-  ", ".-.. ", "--   ", "-.   ", "---  ", ".--. ", "--.- ", ".-.  ", // J-R
                      "...  ", "-    ", "..-  ", "...- ", ".--  ", "-..- ", "-.-- ", "--.. ", // S-Z
                      "-----", ".----", "..---", "...--", "....-", ".....", // 0-5
                      "-....", "--...", "---..", "----.", // 6-9
                      "     "
                     };
-=======
-".--- ", "-.-  ", ".-.. ", "--   ", "-.   ", "---  ", ".--. ", "--.- ", ".-.  ", // J-R 
-"...  ", "-    ", "..-  ", "...- ", ".--  ", "-..- ", "-.-- ", "--.. ", // S-Z
-"-----", ".----", "..---", "...--", "....-", ".....", // 0-5
-"-....", "--...", "---..", "----.", // 6-9
-"     " };
->>>>>>> origin/master
-
 // This array contains the letters and numbers that the user input will be translated to.
 char alphaNum[] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
                     'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
@@ -247,11 +238,8 @@ void fullArray12() {
     singleMorse[i] = ' ';
   }
   Serial.print("User's current input (English): ");
-<<<<<<< HEAD
-  for (int i = 0; i < 33; i++) {
-=======
+  //for (int i = 0; i < 33; i++) {
   for(int i = 0; i < 30; i++) {
->>>>>>> origin/master
     Serial.print(userText[i]);
   }
   buttonPushCounter1 = 0; // Reset buttonPushCounter1 to zero
@@ -261,7 +249,6 @@ void fullArray12() {
 
 }
 
-<<<<<<< HEAD
 //void sendToSlave(char a) {
 //    Wire.beginTransmission(8); // transmit to device #8
 //  Wire.write(a);                // sends one byte
@@ -271,12 +258,5 @@ void fullArray12() {
 void giveData() {
   char dataArray[] = "Hello World";
   Wire.write(dataArray, 12);
-=======
-void sendToSlave(char a) {
-  Serial.println("Sending. . .");
-    Wire.beginTransmission(8); // transmit to device #8
-  Wire.write(1);                // sends one byte
-  Wire.endTransmission();    // stop transmitting
->>>>>>> origin/master
-}
 
+}
