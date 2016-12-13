@@ -19,30 +19,56 @@ const int dotBeat = 60; // For our purposes, the dot beat is a single unit of ti
 const int dashBeat = 3 * dotBeat;
 
 //Begin Josiah setup variables
-const int buttonPin1 = 2; 
+const int buttonPin1 = 2;
 const int buttonPin2 = 3;
 const int buttonPin3 = 4;
-const int ledPin1 = 8;       
+const int ledPin1 = 8;
 const int ledPin2 = 9;
 const int ledPin3 = 10;
 
-int buttonPushCounter1 = 0;   
-int buttonState1 = 0;        
-int lastButtonState1 = 0;   
+int buttonPushCounter1 = 0;
+int buttonState1 = 0;
+int lastButtonState1 = 0;
 
-int buttonPushCounter2 = 0; 
+int buttonPushCounter2 = 0;
 int buttonState2 = 0;
 int lastButtonState2 = 0;
 
-int buttonPushCounter3 = 0; 
+int buttonPushCounter3 = 0;
 int buttonState3 = 0;
 int lastButtonState3 = 0;
 
+//Josiah's Music Stuff
 int length = 1; // the number of notes
 char notes[] = "C"; // a space represents a rest
 int beats[] = {1};
 int tempo = 300;
 
+//Josiahs Arrays
+// Array to hold the chars
+char singleMorse[] = "     ";
+char* morseCode[] = {".-   ", "-... ", "-.-. ", "-..  ", ". ", "..-. ", "--.  ", ".... ", "..   ", // A-I
+                     ".--- ", "-.-  ", ".-.. ", "--   ", "-.   ", "---  ", ".--. ", "--.- ", ".-.  ", // J-R
+                     "...  ", "-    ", "..-  ", "...- ", ".--  ", "-..- ", "-.-- ", "--.. ", // S-Z
+                     "-----", ".----", "..---", "...--", "....-", ".....", // 0-5
+                     "-....", "--...", "---..", "----.", // 6-9
+                     "     "
+                    };
+
+// This array contains the letters and numbers that the user input will be translated to.
+char alphaNum[] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
+                    'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+                    'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+                    '0', '1', '2', '3', '4', '5',
+                    '6', '7', '8', '9', '_'
+                  };
+
+// This array contains the final user text:
+char userText[] = "                              ";
+// Variable to keep track of where to add characters to userText.
+int textIndex = 0;
+char charIndex = 'a';
+//End Josiah
 
 //Begin Ifttt setup
 char serverName[] = "maker.ifttt.com";
@@ -65,6 +91,19 @@ String lastMessage;
 String newMessage;
 
 void setup() {
+  //Establishing Josiahs stuff
+  pinMode(speakerPin, OUTPUT);
+
+  pinMode(buttonPin1, INPUT);
+  pinMode(ledPin1, OUTPUT);
+
+  pinMode(buttonPin2, INPUT);
+  pinMode(ledPin2, OUTPUT);
+
+  pinMode(buttonPin3, INPUT);
+  pinMode(ledPin3, OUTPUT);
+  //End Josiahs stuff
+
   Serial.begin(9600);
   //Signal Power
   pinMode(4, OUTPUT);
@@ -212,8 +251,8 @@ void doPost(String a) {
 
   if (!postPage(serverName, serverPort, pageName, totalMessage.c_str())) Serial.print(F("Fail "));
   else Serial.print(F("Pass "));
-    totalCount++;
-    Serial.println(totalCount,DEC);
+  totalCount++;
+  Serial.println(totalCount, DEC);
 }
 
 byte postPage(char* domainBuffer, int thisPort, char* page, char* thisData)
@@ -297,9 +336,70 @@ void playTone(int tone, int duration) {
 void playNote(char note, int duration) {
   char names[] = { 'C' };
   int tones[] = { 956 };
-  
+
   // play the tone corresponding to the note name
 
   playTone(tones[0], duration);
 }
 
+//Begin Josiahs others
+//////////////////////////////////////////////////////////////////////////////////////////////////
+void storeChar(char c) { // The function takes in an argument, a character, and stores it in the final user array.
+  userText[textIndex] = c;
+  textIndex++; // Move to next index for next char storage.
+}
+
+void fullArray12() {
+  // First, signal the blue light; this indicates that a letter is to be translated.
+
+  for(int fadeValue = 0 ; fadeValue <= 255; fadeValue +=51) { 
+    // sets the value (range from 0 to 255):
+    analogWrite(ledPin3, fadeValue);         
+    // wait for 30 milliseconds to see the dimming effect    
+    delay(30);                            
+    } 
+    // fade out from max to min in increments of 5 points:
+  for(int fadeValue = 255 ; fadeValue >= 0; fadeValue -=51) { 
+    // sets the value (range from 0 to 255):
+    analogWrite(ledPin3, fadeValue);         
+    // wait for 30 milliseconds to see the dimming effect    
+    delay(30);                            
+  } 
+  Serial.print("Current morse code entry: ");
+  for (int i = 0; i < 5; i++) {
+    Serial.print(singleMorse[i]);
+  }
+  Serial.println("");
+  // IMPORTANT: Translate: We do this by comparing the user input (singleMorse) a "library" of morse code Arrays.
+  for(int i = 0; i < 37; i++) {
+    if (strcmp(singleMorse, morseCode[i]) == 0) {
+      Serial.println("Match!");
+      Serial.println(alphaNum[i]); // Print the corresponding alphanumerical character.
+      charIndex = alphaNum[i]; // Store in variable.
+      storeChar(charIndex); // Call the function, and pass the variable to the functions parameters.
+      break;
+    }
+    else {
+    // No match found.
+      if (i == 36) {
+        digitalWrite(ledPin2, HIGH);   // turn the LED on (HIGH is the voltage level)
+        delay(30);
+        digitalWrite(ledPin2, LOW);
+        delay(30);
+      }
+    }
+  }
+  // Important: Clear the morse code user input.
+  for (int i = 0; i < 5; i++) {
+    singleMorse[i] = ' ';
+  }
+  Serial.print("User's current input (English): ");
+  for(int i = 0; i < 33; i++) {
+    Serial.print(userText[i]);
+  } 
+  buttonPushCounter1 = 0; // Reset buttonPushCounter1 to zero
+  buttonPushCounter2 = 0; // Reset buttonPushCounter2 to zero
+  Serial.println("");
+  Serial.println("(buttonPushCounters 1 and 2 have been reset to zero.)"); 
+  
+}

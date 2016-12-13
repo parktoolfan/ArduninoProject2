@@ -179,7 +179,6 @@ void loop() {
  lastButtonState3 = buttonState3;
 }
 
-
 void storeChar(char c) { // The function takes in an argument, a character, and stores it in the final user array.
   userText[textIndex] = c;
   textIndex++; // Move to next index for next char storage.
