@@ -24,7 +24,7 @@ char params[32];
 EthernetClient client;
 
 //Establish Program output pins
-const int buttonPin = 3;
+const int buttonPin = 5;
 int buttonState = 0;
 
 //lastMessage will be the string that is the last text message recieved, we will compare this with newMessage to see if there has been a new text message.
@@ -34,8 +34,8 @@ String newMessage;
 void setup() {
   Serial.begin(9600);
   //Signal Power
-  pinMode(4, OUTPUT);
-  digitalWrite(4, HIGH);
+  pinMode(7, OUTPUT);
+  digitalWrite(7, HIGH);
   pinMode(buttonPin, INPUT);
 
   //start LCD
@@ -66,7 +66,7 @@ void loop() {
   //Check if there is a message to send and if so, send it.
   buttonState = digitalRead(buttonPin);
   Serial.print(buttonState);
-  if (buttonState == 0) {
+  if (buttonState == 1) {
     // turn LED on:
     //Blink LED 3 times
     digitalWrite(4, HIGH);
@@ -82,7 +82,7 @@ void loop() {
     digitalWrite(4, LOW);
     delay(100);
     doPost("Jacob, Sending is Done!");
-    buttonState = 1;
+    buttonState = 0;
   }
 
   //Recieving code
