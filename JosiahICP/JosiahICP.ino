@@ -59,8 +59,7 @@ char* morseCode[] = {".-   ", "-... ", "-.-. ", "-..  ", ". ", "..-. ", "--.  ",
 "...  ", "-    ", "..-  ", "...- ", ".--  ", "-..- ", "-.-- ", "--.. ", // S-Z
 "-----", ".----", "..---", "...--", "....-", ".....", // 0-5
 "-....", "--...", "---..", "----.", // 6-9
-"     "
-};
+"     " };
 
 // This array contains the letters and numbers that the user input will be translated to.
 char alphaNum[] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
@@ -237,7 +236,7 @@ void fullArray12() {
     singleMorse[i] = ' ';
   }
   Serial.print("User's current input (English): ");
-  for(int i = 0; i < 33; i++) {
+  for(int i = 0; i < 30; i++) {
     Serial.print(userText[i]);
   } 
   buttonPushCounter1 = 0; // Reset buttonPushCounter1 to zero
@@ -248,8 +247,9 @@ void fullArray12() {
 }
 
 void sendToSlave(char a) {
+  Serial.println("Sending. . .");
     Wire.beginTransmission(8); // transmit to device #8
-  Wire.write(a);                // sends one byte
+  Wire.write(1);                // sends one byte
   Wire.endTransmission();    // stop transmitting
 }
 
