@@ -1,3 +1,5 @@
+#include <Wire.h>
+
 
 int speakerPin = 13;
 
@@ -74,6 +76,10 @@ int textIndex = 0;
 char charIndex = 'a';
 
 void setup() {
+  //wire setup
+  Wire.begin(); // join i2c bus (address optional for master)
+
+ 
  pinMode(speakerPin, OUTPUT);
  
  pinMode(buttonPin1, INPUT);
@@ -212,6 +218,8 @@ void fullArray12() {
       Serial.println(alphaNum[i]); // Print the corresponding alphanumerical character.
       charIndex = alphaNum[i]; // Store in variable.
       storeChar(charIndex); // Call the function, and pass the variable to the functions parameters.
+      //Call our new method
+      sendToSlave(charIndex);
       break;
     }
     else {
@@ -239,4 +247,9 @@ void fullArray12() {
   
 }
 
+void sendToSlave(char a) {
+    Wire.beginTransmission(8); // transmit to device #8
+  Wire.write(a);                // sends one byte
+  Wire.endTransmission();    // stop transmitting
+}
 
