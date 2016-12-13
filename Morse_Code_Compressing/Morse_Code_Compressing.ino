@@ -237,7 +237,7 @@ void fullArray12() {
   } 
   buttonPushCounter1 = 0; // Reset buttonPushCounter1 to zero
   buttonPushCounter2 = 0; // Reset buttonPushCounter2 to zero
-  Serial.print("");
+  Serial.println("");
   Serial.println("(buttonPushCounters 1 and 2 have been reset to zero.)"); 
   
 }
