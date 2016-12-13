@@ -27,6 +27,7 @@ EthernetClient client;
 //Establish Program output pins
 const int buttonPin = 5;
 int buttonState = 0;
+int ledPin1 = 7;
 
 //lastMessage will be the string that is the last text message recieved, we will compare this with newMessage to see if there has been a new text message.
 String lastMessage;
@@ -39,8 +40,8 @@ int numberofcharsrecieved = 0;
 void setup() {
   Serial.begin(9600);
   //Signal Power
-  pinMode(7, OUTPUT);
-  digitalWrite(7, HIGH);
+  pinMode(ledPin1, OUTPUT);
+  digitalWrite(ledPin1, HIGH);
   pinMode(buttonPin, INPUT);
 
   //wire setup
@@ -68,9 +69,9 @@ void loop() {
   Ethernet.maintain();
   Serial.println("Looping");
   //Blink LED
-  digitalWrite(4, HIGH);
+  digitalWrite(ledPin1, HIGH);
   delay(500);
-  digitalWrite(4, LOW);
+  digitalWrite(ledPin1, LOW);
   delay(500);
 
   //Check if there is a message to send and if so, send it.
@@ -79,17 +80,17 @@ void loop() {
   if (buttonState == 1) {
     // turn LED on:
     //Blink LED 3 times
-    digitalWrite(4, HIGH);
+    digitalWrite(ledPin1, HIGH);
     delay(100);
-    digitalWrite(4, LOW);
+    digitalWrite(ledPin1, LOW);
     delay(100);
-    digitalWrite(4, HIGH);
+    digitalWrite(ledPin1, HIGH);
     delay(100);
-    digitalWrite(4, LOW);
+    digitalWrite(ledPin1, LOW);
     delay(100);
-    digitalWrite(4, HIGH);
+    digitalWrite(ledPin1, HIGH);
     delay(100);
-    digitalWrite(4, LOW);
+    digitalWrite(ledPin1, LOW);
     delay(100);
 
     char dataRecieved[12];
@@ -117,7 +118,7 @@ void loop() {
     Serial.println();
   }
   //delay 10 seconds at end
-  delay(15000);
+  delay(5000);
 }
 
 //Begin AMAZON S3 METHODS
