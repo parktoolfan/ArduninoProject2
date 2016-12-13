@@ -76,7 +76,7 @@ void loop() {
 
   //Check if there is a message to send and if so, send it.
   buttonState = digitalRead(buttonPin);
-  Serial.print(buttonState);
+  //Serial.print(buttonState);
   if (buttonState == 1) {
     // turn LED on:
     //Blink LED 3 times
@@ -98,9 +98,14 @@ void loop() {
     for (int i = 0; i < n; i++) {
       dataRecieved[i] = Wire.read();
     }
+    dataRecieved[27] = ' ';
+    dataRecieved[28] = ' ';
+    dataRecieved[29] = ' ';
+    dataRecieved[30] = ' ';
     Serial.println(dataRecieved);
     //doPost("Jacob, Sending is Done!");
     doPost(dataRecieved);
+    toPrint(dataRecieved);
     buttonState = 0;
   }
 
