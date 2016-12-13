@@ -43,9 +43,9 @@ void setup() {
   digitalWrite(7, HIGH);
   pinMode(buttonPin, INPUT);
 
-  //Setup for wire transfer
-    Wire.begin(8);                // join i2c bus with address #8
-  Wire.onReceive(receiveEvent); // register event
+  //wire setup
+  Wire.begin(); // join i2c bus (address optional for master)
+
   Serial.begin(9600);           // start serial for output
 
   //start LCD
@@ -91,7 +91,14 @@ void loop() {
     delay(100);
     digitalWrite(4, LOW);
     delay(100);
-    doPost("Jacob, Sending is Done!");
+
+    char dataRecieved[12];
+    int n = Wire.requestFrom(8, 12);
+    for (int i = 0; i < n; i++) {
+      dataRecieved[i] = Wire.read();
+    }
+    Serial.println(dataRecieved);
+    //doPost("Jacob, Sending is Done!");
     buttonState = 0;
   }
 
@@ -189,8 +196,8 @@ void doPost(String a) {
 
   if (!postPage(serverName, serverPort, pageName, totalMessage.c_str())) Serial.print(F("Fail "));
   else Serial.print(F("Pass "));
-    totalCount++;
-    Serial.println(totalCount,DEC);
+  totalCount++;
+  Serial.println(totalCount, DEC);
 }
 
 byte postPage(char* domainBuffer, int thisPort, char* page, char* thisData)
@@ -263,9 +270,9 @@ void toPrint(char output[]) {
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 // function that executes whenever data is received from master
 // this function is registered as an event, see setup()
-void receiveEvent(int howMany) {
-    Serial.println("RECIEVING FROM ARDUINO");
-    int c = Wire.read(); // receive byte as a character
-    Serial.print(c);         // print the character
-  
-}
+//void receiveEvent(int howMany) {
+//    Serial.println("RECIEVING FROM ARDUINO");
+//    int c = Wire.read(); // receive byte as a character
+//    Serial.print(c);         // print the character
+//
+//}

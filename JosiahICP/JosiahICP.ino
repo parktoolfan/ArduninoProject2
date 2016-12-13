@@ -221,7 +221,7 @@ void fullArray12() {
       charIndex = alphaNum[i]; // Store in variable.
       storeChar(charIndex); // Call the function, and pass the variable to the functions parameters.
       //Call our new method
-      sendToSlave(charIndex);
+      //sendToSlave(charIndex);
       break;
     }
     else {
@@ -255,7 +255,8 @@ void fullArray12() {
 //  Wire.endTransmission();    // stop transmitting
 //}
 
-void sendData {
-
+void giveData() {
+  char dataArray[] = "Hello World";
+  Wire.write(dataArray, 12);
 }
 
