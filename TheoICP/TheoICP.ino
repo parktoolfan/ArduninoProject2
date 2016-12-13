@@ -76,7 +76,7 @@ void loop() {
 
   //Check if there is a message to send and if so, send it.
   buttonState = digitalRead(buttonPin);
-  Serial.print(buttonState);
+  //Serial.print(buttonState);
   if (buttonState == 1) {
     // turn LED on:
     //Blink LED 3 times
@@ -93,13 +93,19 @@ void loop() {
     digitalWrite(ledPin1, LOW);
     delay(100);
 
-    char dataRecieved[12];
-    int n = Wire.requestFrom(8, 12);
-    for (int i = 0; i < n; i++) {
+    char dataRecieved[30];
+    int n = Wire.requestFrom(8, 30);
+    for (int i = 0; i < 30; i++) {
       dataRecieved[i] = Wire.read();
     }
+    dataRecieved[27] = ' ';
+    dataRecieved[28] = ' ';
+    dataRecieved[29] = ' ';
+    //dataRecieved[30] = ' ';
     Serial.println(dataRecieved);
     //doPost("Jacob, Sending is Done!");
+    toPrint(dataRecieved);
+    doPost(dataRecieved);
     buttonState = 0;
   }
 
@@ -189,9 +195,11 @@ void sendGET() //client function to send/receive GET request data.
 void doPost(String a) {
 
   //Create Payload Message
-  String ident = "value1=3175636398&value2=";
+  //String ident = "value1=5706601483value2=";
+  //String totalMessage = ident + a;
+  String ident = "value1=";
   String totalMessage = ident + a;
-
+  
   Serial.print("totalMessage: ");
   Serial.println(totalMessage);
 
