@@ -12,6 +12,38 @@ ParallaxLCD lcd(6, 2, 16);
 //Begin Amazon wireless setup
 char serverNameAmazon[] = "s3.amazonaws.com"; // zoomkat's test web page server  web.comporium.net
 
+//Begin Josiah Music Piezo
+int speakerPi
+const int dotBeat = 60; // For our purposes, the dot beat is a single unit of time (in morse code, a dot is one unit, while a dash is three unts).
+const int dashBeat = 3 * dotBeat;
+
+//Begin Josiah setup variables
+int speakerPin = 13;
+const int buttonPin1 = 2; 
+const int buttonPin2 = 3;
+const int buttonPin3 = 4;
+const int ledPin1 = 8;       
+const int ledPin2 = 9;
+const int ledPin3 = 10;
+
+int buttonPushCounter1 = 0;   
+int buttonState1 = 0;        
+int lastButtonState1 = 0;   
+
+int buttonPushCounter2 = 0; 
+int buttonState2 = 0;
+int lastButtonState2 = 0;
+
+int buttonPushCounter3 = 0; 
+int buttonState3 = 0;
+int lastButtonState3 = 0;
+
+int length = 1; // the number of notes
+char notes[] = "C"; // a space represents a rest
+int beats[] = {1};
+int tempo = 300;
+
+
 //Begin Ifttt setup
 char serverName[] = "maker.ifttt.com";
 int totalCount = 0; //0
@@ -24,8 +56,9 @@ char params[32];
 EthernetClient client;
 
 //Establish Program output pins
-const int buttonPin = 3;
+const int buttonPin = 5;
 int buttonState = 0;
+int ledPin4 = 7;
 
 //lastMessage will be the string that is the last text message recieved, we will compare this with newMessage to see if there has been a new text message.
 String lastMessage;
@@ -248,3 +281,25 @@ void toPrint(char output[]) {
   lcd.at(0, 0, output);
   delay(5000);
 }
+
+//Begin Josiah music
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void playTone(int tone, int duration) {
+  for (long i = 0; i < duration * 1000L; i += tone * 2) {
+    digitalWrite(speakerPin, HIGH);
+    delayMicroseconds(tone);
+    digitalWrite(speakerPin, LOW);
+    delayMicroseconds(tone);
+  }
+}
+
+void playNote(char note, int duration) {
+  char names[] = { 'C' };
+  int tones[] = { 956 };
+  
+  // play the tone corresponding to the note name
+
+  playTone(tones[0], duration);
+}
+

@@ -1,9 +1,7 @@
 
-
-
-//////////////////////////////////////////////////////////////////////////
 int speakerPin = 13;
 
+//////////////////////////////////////////////////////////////////////////
 const int dotBeat = 60; // For our purposes, the dot beat is a single unit of time (in morse code, a dot is one unit, while a dash is three unts).
 const int dashBeat = 3 * dotBeat;
 
@@ -237,7 +235,7 @@ void fullArray12() {
   } 
   buttonPushCounter1 = 0; // Reset buttonPushCounter1 to zero
   buttonPushCounter2 = 0; // Reset buttonPushCounter2 to zero
-  Serial.print("");
+  Serial.println("");
   Serial.println("(buttonPushCounters 1 and 2 have been reset to zero.)"); 
   
 }
