@@ -256,7 +256,10 @@ void fullArray12() {
 //}
 
 void giveData() {
-  char dataArray[] = "Hello World";
-  Wire.write(dataArray, 12);
-
+  Serial.print("Sending, here is what I am sending: ");
+  Serial.println(userText);
+  Wire.write(userText, 30);
+  for (int i = 0; i < 30; i++) {
+    userText[i] = ' ';
+  }
 }

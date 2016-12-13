@@ -93,8 +93,8 @@ void loop() {
     digitalWrite(ledPin1, LOW);
     delay(100);
 
-    char dataRecieved[12];
-    int n = Wire.requestFrom(8, 12);
+    char dataRecieved[30];
+    int n = Wire.requestFrom(8, 30);
     for (int i = 0; i < n; i++) {
       dataRecieved[i] = Wire.read();
     }
