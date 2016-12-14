@@ -92,12 +92,13 @@ void loop() {
     delay(100);
     digitalWrite(ledPin1, LOW);
     delay(100);
-
+    //Now lets get text message from slave arduino.
     char dataRecieved[30];
     int n = Wire.requestFrom(8, 30);
     for (int i = 0; i < 30; i++) {
       dataRecieved[i] = Wire.read();
     }
+    //Attempt to remove "noise" from end of array.
     dataRecieved[27] = ' ';
     dataRecieved[28] = ' ';
     dataRecieved[29] = ' ';
@@ -147,6 +148,7 @@ void sendGET() //client function to send/receive GET request data.
 
   while (client.connected() && !client.available()) delay(1); //waits for data to be downloaded
 
+//Now we'll parse the HTTP return.
   while (true) {
     if (client.peek() == 'b') {
       client.read();
@@ -199,7 +201,7 @@ void doPost(String a) {
   //String totalMessage = ident + a;
   String ident = "value1=";
   String totalMessage = ident + a;
-  
+
   Serial.print("totalMessage: ");
   Serial.println(totalMessage);
 
@@ -209,6 +211,8 @@ void doPost(String a) {
   Serial.println(totalCount, DEC);
 }
 
+//The following method is mostly uncommented because we are not the creators of this method.
+//The method can be found here https://forum.arduino.cc/index.php?topic=155218.0
 byte postPage(char* domainBuffer, int thisPort, char* page, char* thisData)
 {
   int inChar;
@@ -269,6 +273,7 @@ byte postPage(char* domainBuffer, int thisPort, char* page, char* thisData)
 
 //Begin LCD Methods
 //////////////////////////////////////////////////////////////////////////////////////////////////////
+//This prints a char[] the the LCD
 void toPrint(char output[]) {
   lcd.empty();
   lcd.at(0, 0, output);
