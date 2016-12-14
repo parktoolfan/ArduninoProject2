@@ -124,7 +124,7 @@ void loop() {
     Serial.println();
   }
   //delay 10 seconds at end
-  delay(5000);
+  delay(2000);
 }
 
 //Begin AMAZON S3 METHODS
